@@ -17,12 +17,12 @@ public class MissaoDAO {
 
     private static final String COLUNAS =
             "id_missao, titulo_missao, descricao_missao, pontos_recompensa, "
-                    + "categoria_missao, ativa, dicas_missao";
+                    + "categoria_missao, ativa, dicas_missao, periodo_missao";
 
     // Create
     public void inserir(Missao missao) throws SQLException {
         String sql = "INSERT INTO Missao (titulo_missao, descricao_missao, pontos_recompensa, "
-                + "categoria_missao, ativa, dicas_missao) VALUES (?, ?, ?, ?, ?, ?)";
+                + "categoria_missao, ativa, dicas_missao, periodo_missao) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conexao = ConexaoBancoDados.getConnection();
              PreparedStatement stmt = conexao.prepareStatement(sql, new String[]{"id_missao"})) {
@@ -33,6 +33,7 @@ public class MissaoDAO {
             stmt.setString(4, missao.getCategoria());
             stmt.setString(5, missao.isAtiva() ? "S" : "N");
             stmt.setString(6, dicasParaTexto(missao.getDicas()));
+            stmt.setString(7, missao.getPeriodo());
             stmt.executeUpdate();
 
             try (ResultSet chaves = stmt.getGeneratedKeys()) {
@@ -75,8 +76,8 @@ public class MissaoDAO {
     // Update
     public boolean atualizar(Missao missao) throws SQLException {
         String sql = "UPDATE Missao SET titulo_missao = ?, descricao_missao = ?, "
-                + "pontos_recompensa = ?, categoria_missao = ?, ativa = ?, dicas_missao = ? "
-                + "WHERE id_missao = ?";
+                + "pontos_recompensa = ?, categoria_missao = ?, ativa = ?, dicas_missao = ?, "
+                + "periodo_missao = ? WHERE id_missao = ?";
 
         try (Connection conexao = ConexaoBancoDados.getConnection();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -87,7 +88,8 @@ public class MissaoDAO {
             stmt.setString(4, missao.getCategoria());
             stmt.setString(5, missao.isAtiva() ? "S" : "N");
             stmt.setString(6, dicasParaTexto(missao.getDicas()));
-            stmt.setInt(7, missao.getId());
+            stmt.setString(7, missao.getPeriodo());
+            stmt.setInt(8, missao.getId());
 
             return stmt.executeUpdate() > 0;
         }
@@ -114,7 +116,8 @@ public class MissaoDAO {
                 rs.getInt("pontos_recompensa"),
                 rs.getString("categoria_missao"),
                 "S".equals(rs.getString("ativa")),
-                textoParaDicas(rs.getString("dicas_missao"))
+                textoParaDicas(rs.getString("dicas_missao")),
+                rs.getString("periodo_missao")
         );
     }
 

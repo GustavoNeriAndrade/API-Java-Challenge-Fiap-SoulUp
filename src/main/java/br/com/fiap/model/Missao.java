@@ -11,9 +11,10 @@ public class Missao {
     private String categoria;
     private boolean ativa;
     private List<String> dicas;
+    private String periodo;
 
     public Missao(int id, String titulo, String descricao, int pontosRecompensa,
-                  String categoria, boolean ativa, List<String> dicas) {
+                  String categoria, boolean ativa, List<String> dicas, String periodo) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -21,6 +22,7 @@ public class Missao {
         this.categoria = categoria;
         this.ativa = ativa;
         this.dicas = dicas;
+        this.periodo = periodo;
     }
 
     public int getId() { return id; }
@@ -43,4 +45,7 @@ public class Missao {
 
     public List<String> getDicas() { return dicas; }
     public void setDicas(List<String> dicas) { this.dicas = dicas; }
+
+    public String getPeriodo() { return periodo; }
+    public void setPeriodo(String periodo) { this.periodo = periodo; }
 }
