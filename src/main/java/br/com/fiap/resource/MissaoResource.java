@@ -34,8 +34,7 @@ public class MissaoResource {
     @GetMapping("/concluidas")
     public List<UsuarioMissaoResponse> concluidas(@RequestAttribute("idUsuario") int idUsuario)
             throws SQLException {
-        return missaoBO.listarConcluidas(idUsuario).stream()
-                .map(UsuarioMissaoResponse::from).toList();
+        return missaoBO.listarConcluidas(idUsuario);
     }
 
     @GetMapping("/{id}")
